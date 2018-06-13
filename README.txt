@@ -1,0 +1,1 @@
+:>houses.json && scrapy crawl houses -o houses.json
