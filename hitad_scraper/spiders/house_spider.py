@@ -1,6 +1,5 @@
 import scrapy
 import logging
-from lxml import etree
 
 class HouseAdItem(scrapy.Item):
     title = scrapy.Field()
@@ -38,15 +37,14 @@ class HouseSpider(scrapy.Spider):
                 house_ad['property_type'] = (lambda x: '-' if len(x) < 4 else x[3].extract().strip())(house.css('div.item-facets::text'))
                 house_ad['price'] = (lambda x: int(x[4:].replace(',','')) if x.startswith('Rs') else x)(house.css('span.list-price-value::text')[0].extract())
 
-                request = scrapy.Request(house_ad['link'], callback=self.parse_description_page)
-                request.meta['house_ad'] = house_ad
-                yield request
+                description_request = scrapy.Request(house_ad['link'], callback=self.parse_description_page)
+                description_request.meta['house_ad'] = house_ad
+                yield description_request
         self.page += 25
         next_page_url = self.start_urls[0] + '?page=' + str(self.page)
         yield scrapy.Request(url=next_page_url, callback=self.parse)
 
     def parse_description_page(self, response):
         house_ad = response.meta['house_ad']
-        # house_ad['description'] = response.css('div.mar_t_20>p::text')[0].extract().strip()
         house_ad['description'] = " ".join(response.xpath('//div[@class="mar_t_20"]/p/text()').extract())
         yield house_ad
