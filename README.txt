@@ -1,1 +1,1 @@
-:>houses.json && scrapy crawl houses -o houses.json
+:>houses.json && :>info.log && scrapy crawl houses -o houses.json --logfile 'info.log'

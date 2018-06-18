@@ -14,6 +14,7 @@ BOT_NAME = 'hitad_scraper'
 SPIDER_MODULES = ['hitad_scraper.spiders']
 NEWSPIDER_MODULE = 'hitad_scraper.spiders'
 
+FEED_EXPORT_ENCODING = 'utf-8'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'hitad_scraper (+http://www.yourdomain.com)'
